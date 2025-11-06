@@ -1,411 +1,506 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>Опрос настроения</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #2c2c2c;
-        color: #ddd;
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        max-width: 700px;
-        width: 95%;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #3a3a3a;
-        border-radius: 10px;
-        box-sizing: border-box;
-    }
-    h1, h2 {
-        text-align: center;
-        color: #fff;
-        margin: 15px 0;
-    }
-    .question-block {
-        margin-bottom: 30px;
-    }
-    .question {
-        margin: 15px 0;
-        font-size: 18px;
-    }
-    label {
-        display: block;
-        margin: 10px 0;
-        cursor: pointer;
-        padding: 8px;
-        border-radius: 5px;
-        transition: background 0.2s;
-    }
-    label:hover {
-        background-color: #4a4a4a;
-    }
-    input[type="radio"] {
-        margin-right: 12px;
-        transform: scale(1.3);
-    }
-    button {
-        margin-top: 20px;
-        padding: 15px 25px;
-        background-color: #555;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        display: block;
-        font-size: 18px;
-        margin-left: auto;
-        margin-right: auto;
-        transition: background 0.2s;
-    }
-    button:hover {
-        background-color: #777;
-    }
-    .result {
-        display: none;
-        margin-top: 30px;
-        padding: 20px;
-        background-color: #444;
-        border-radius: 10px;
-        font-size: 18px;
-    }
-    .score {
-        font-weight: bold;
-        margin: 12px 0;
-    }
-    @media screen and (max-width: 500px){
-        .question {
-            font-size: 20px;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Опрос настроения</title>
+    <style>
+        :root {
+            --bg-color: #2c2c2c;
+            --container-bg-color: #3a3a3a;
+            --text-color: #ddd;
+            --title-color: #fff;
+            --button-color: #555;
+            --button-hover-color: #777;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: var(--container-bg-color);
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+        h1, h2 {
+            text-align: center;
+            color: var(--title-color);
+            margin-top: 0;
+        }
+        p {
+            line-height: 1.5;
+        }
+        .instructions {
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        .question-block {
+            margin-bottom: 30px;
+        }
+        .question-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .question-item {
+            margin-bottom: 15px;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .radio-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .radio-options label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+            cursor: pointer;
+            width: 18%;
+            box-sizing: border-box;
+            background-color: #444;
+            text-align: center;
+        }
+        .radio-options label:hover {
+            background-color: #666;
+        }
+        .radio-options input[type="radio"] {
+            margin-top: 5px;
+            margin-right: 0;
         }
         button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: var(--button-color);
+            color: var(--title-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
             width: 100%;
-            font-size: 20px;
-            padding: 18px 0;
+            font-size: 1rem;
+            transition: background-color 0.2s;
         }
-        label {
-            font-size: 20px;
-            padding: 12px;
+        button:hover {
+            background-color: var(--button-hover-color);
         }
-    }
-</style>
+        .result {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #444;
+            border-radius: 10px;
+        }
+        .score {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* Адаптивные стили для мобильных устройств */
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px 10px;
+                padding: 15px;
+            }
+            .radio-options {
+                flex-direction: row;
+                justify-content: center;
+                gap: 5px;
+            }
+            .radio-options label {
+                width: 18%; /* Позволяет уместить 5 вариантов в одну строку */
+                font-size: 0.8rem;
+                padding: 5px;
+            }
+            .question-text {
+                text-align: center;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
 </head>
 <body>
+
 <div class="container">
     <h1>Опрос настроения</h1>
-    <div id="quiz">
+    <p class="instructions">Инструкция: Отметьте, как вы себя чувствуете прямо сейчас. Пожалуйста, ответьте на все пункты. Выберите один вариант для каждого вопроса.</p>
+
+    <form id="mood-survey">
+        <!-- Депрессия -->
         <div class="question-block">
-            <h2>Депрессия</h2>
-            <div class="question">
-                <label>Грустно, упадок настроения
-                    <input type="radio" name="dep1" value="0" required>0
-                    <input type="radio" name="dep1" value="1">1
-                    <input type="radio" name="dep1" value="2">2
-                    <input type="radio" name="dep1" value="3">3
-                    <input type="radio" name="dep1" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Чувствую себя безнадёжно, обескураженно
-                    <input type="radio" name="dep2" value="0" required>0
-                    <input type="radio" name="dep2" value="1">1
-                    <input type="radio" name="dep2" value="2">2
-                    <input type="radio" name="dep2" value="3">3
-                    <input type="radio" name="dep2" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Низкая самооценка, ощущение никчёмности
-                    <input type="radio" name="dep3" value="0" required>0
-                    <input type="radio" name="dep3" value="1">1
-                    <input type="radio" name="dep3" value="2">2
-                    <input type="radio" name="dep3" value="3">3
-                    <input type="radio" name="dep3" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Нет мотивации что-то делать
-                    <input type="radio" name="dep4" value="0" required>0
-                    <input type="radio" name="dep4" value="1">1
-                    <input type="radio" name="dep4" value="2">2
-                    <input type="radio" name="dep4" value="3">3
-                    <input type="radio" name="dep4" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Потерял(а) интерес или удовольствие от жизни
-                    <input type="radio" name="dep5" value="0" required>0
-                    <input type="radio" name="dep5" value="1">1
-                    <input type="radio" name="dep5" value="2">2
-                    <input type="radio" name="dep5" value="3">3
-                    <input type="radio" name="dep5" value="4">4
-                </label>
+            <h2>Насколько подавленно вы себя чувствуете?</h2>
+            <div class="radio-options">
+                <label>0 — Вовсе нет<input type="radio" name="depression" value="0" required></label>
+                <label>1 — Немного<input type="radio" name="depression" value="1"></label>
+                <label>2 — Умеренно<input type="radio" name="depression" value="2"></label>
+                <label>3 — Сильно<input type="radio" name="depression" value="3"></label>
+                <label>4 — Чрезвычайно<input type="radio" name="depression" value="4"></label>
             </div>
         </div>
+
+        <ul class="question-list">
+            <li class="question-item">
+                <span class="question-text">1. Грусть или подавленность</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="dep1" value="0" required></label>
+                    <label>1<input type="radio" name="dep1" value="1"></label>
+                    <label>2<input type="radio" name="dep1" value="2"></label>
+                    <label>3<input type="radio" name="dep1" value="3"></label>
+                    <label>4<input type="radio" name="dep1" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">2. Чувство безнадёжности</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="dep2" value="0" required></label>
+                    <label>1<input type="radio" name="dep2" value="1"></label>
+                    <label>2<input type="radio" name="dep2" value="2"></label>
+                    <label>3<input type="radio" name="dep2" value="3"></label>
+                    <label>4<input type="radio" name="dep2" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">3. Низкая самооценка, чувство никчемности</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="dep3" value="0" required></label>
+                    <label>1<input type="radio" name="dep3" value="1"></label>
+                    <label>2<input type="radio" name="dep3" value="2"></label>
+                    <label>3<input type="radio" name="dep3" value="3"></label>
+                    <label>4<input type="radio" name="dep3" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">4. Потеря мотивации что-либо делать</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="dep4" value="0" required></label>
+                    <label>1<input type="radio" name="dep4" value="1"></label>
+                    <label>2<input type="radio" name="dep4" value="2"></label>
+                    <label>3<input type="radio" name="dep4" value="3"></label>
+                    <label>4<input type="radio" name="dep4" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">5. Потеря интереса или удовольствия от жизни</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="dep5" value="0" required></label>
+                    <label>1<input type="radio" name="dep5" value="1"></label>
+                    <label>2<input type="radio" name="dep5" value="2"></label>
+                    <label>3<input type="radio" name="dep5" value="3"></label>
+                    <label>4<input type="radio" name="dep5" value="4"></label>
+                </div>
+            </li>
+        </ul>
 
         <!-- Тревога -->
         <div class="question-block">
-            <h2>Тревога</h2>
-            <div class="question">
-                <label>Тревожно
-                    <input type="radio" name="anx1" value="0" required>0
-                    <input type="radio" name="anx1" value="1">1
-                    <input type="radio" name="anx1" value="2">2
-                    <input type="radio" name="anx1" value="3">3
-                    <input type="radio" name="anx1" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Страшно
-                    <input type="radio" name="anx2" value="0" required>0
-                    <input type="radio" name="anx2" value="1">1
-                    <input type="radio" name="anx2" value="2">2
-                    <input type="radio" name="anx2" value="3">3
-                    <input type="radio" name="anx2" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Много переживаний и беспокойства
-                    <input type="radio" name="anx3" value="0" required>0
-                    <input type="radio" name="anx3" value="1">1
-                    <input type="radio" name="anx3" value="2">2
-                    <input type="radio" name="anx3" value="3">3
-                    <input type="radio" name="anx3" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Напряжён(а), “на взводе”
-                    <input type="radio" name="anx4" value="0" required>0
-                    <input type="radio" name="anx4" value="1">1
-                    <input type="radio" name="anx4" value="2">2
-                    <input type="radio" name="anx4" value="3">3
-                    <input type="radio" name="anx4" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Нервничаю
-                    <input type="radio" name="anx5" value="0" required>0
-                    <input type="radio" name="anx5" value="1">1
-                    <input type="radio" name="anx5" value="2">2
-                    <input type="radio" name="anx5" value="3">3
-                    <input type="radio" name="anx5" value="4">4
-                </label>
+            <h2>Насколько тревожно вы себя чувствуете?</h2>
+            <div class="radio-options">
+                <label>0 — Вовсе нет<input type="radio" name="anxiety" value="0" required></label>
+                <label>1 — Немного<input type="radio" name="anxiety" value="1"></label>
+                <label>2 — Умеренно<input type="radio" name="anxiety" value="2"></label>
+                <label>3 — Сильно<input type="radio" name="anxiety" value="3"></label>
+                <label>4 — Чрезвычайно<input type="radio" name="anxiety" value="4"></label>
             </div>
         </div>
+
+        <ul class="question-list">
+            <li class="question-item">
+                <span class="question-text">1. Тревога</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="anx1" value="0" required></label>
+                    <label>1<input type="radio" name="anx1" value="1"></label>
+                    <label>2<input type="radio" name="anx1" value="2"></label>
+                    <label>3<input type="radio" name="anx1" value="3"></label>
+                    <label>4<input type="radio" name="anx1" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">2. Чувство страха</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="anx2" value="0" required></label>
+                    <label>1<input type="radio" name="anx2" value="1"></label>
+                    <label>2<input type="radio" name="anx2" value="2"></label>
+                    <label>3<input type="radio" name="anx2" value="3"></label>
+                    <label>4<input type="radio" name="anx2" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">3. Беспокойство и переживания</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="anx3" value="0" required></label>
+                    <label>1<input type="radio" name="anx3" value="1"></label>
+                    <label>2<input type="radio" name="anx3" value="2"></label>
+                    <label>3<input type="radio" name="anx3" value="3"></label>
+                    <label>4<input type="radio" name="anx3" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">4. Напряжение, "на взводе"</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="anx4" value="0" required></label>
+                    <label>1<input type="radio" name="anx4" value="1"></label>
+                    <label>2<input type="radio" name="anx4" value="2"></label>
+                    <label>3<input type="radio" name="anx4" value="3"></label>
+                    <label>4<input type="radio" name="anx4" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">5. Нервозность</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="anx5" value="0" required></label>
+                    <label>1<input type="radio" name="anx5" value="1"></label>
+                    <label>2<input type="radio" name="anx5" value="2"></label>
+                    <label>3<input type="radio" name="anx5" value="3"></label>
+                    <label>4<input type="radio" name="anx5" value="4"></label>
+                </div>
+            </li>
+        </ul>
 
         <!-- Злость -->
         <div class="question-block">
-            <h2>Злость / раздражение</h2>
-            <div class="question">
-                <label>Испытываю фрустрацию
-                    <input type="radio" name="ang1" value="0" required>0
-                    <input type="radio" name="ang1" value="1">1
-                    <input type="radio" name="ang1" value="2">2
-                    <input type="radio" name="ang1" value="3">3
-                    <input type="radio" name="ang1" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Злюсь
-                    <input type="radio" name="ang2" value="0" required>0
-                    <input type="radio" name="ang2" value="1">1
-                    <input type="radio" name="ang2" value="2">2
-                    <input type="radio" name="ang2" value="3">3
-                    <input type="radio" name="ang2" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Есть обида, чувство несправедливости
-                    <input type="radio" name="ang3" value="0" required>0
-                    <input type="radio" name="ang3" value="1">1
-                    <input type="radio" name="ang3" value="2">2
-                    <input type="radio" name="ang3" value="3">3
-                    <input type="radio" name="ang3" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Хочу вспылить
-                    <input type="radio" name="ang4" value="0" required>0
-                    <input type="radio" name="ang4" value="1">1
-                    <input type="radio" name="ang4" value="2">2
-                    <input type="radio" name="ang4" value="3">3
-                    <input type="radio" name="ang4" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Раздражён(а) мелочами
-                    <input type="radio" name="ang5" value="0" required>0
-                    <input type="radio" name="ang5" value="1">1
-                    <input type="radio" name="ang5" value="2">2
-                    <input type="radio" name="ang5" value="3">3
-                    <input type="radio" name="ang5" value="4">4
-                </label>
+            <h2>Насколько злость вы испытываете?</h2>
+            <div class="radio-options">
+                <label>0 — Вовсе нет<input type="radio" name="anger" value="0" required></label>
+                <label>1 — Немного<input type="radio" name="anger" value="1"></label>
+                <label>2 — Умеренно<input type="radio" name="anger" value="2"></label>
+                <label>3 — Сильно<input type="radio" name="anger" value="3"></label>
+                <label>4 — Чрезвычайно<input type="radio" name="anger" value="4"></label>
             </div>
         </div>
 
-        <!-- Позитив -->
+        <ul class="question-list">
+            <li class="question-item">
+                <span class="question-text">1. Чувство фрустрации</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="ang1" value="0" required></label>
+                    <label>1<input type="radio" name="ang1" value="1"></label>
+                    <label>2<input type="radio" name="ang1" value="2"></label>
+                    <label>3<input type="radio" name="ang1" value="3"></label>
+                    <label>4<input type="radio" name="ang1" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">2. Раздражение</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="ang2" value="0" required></label>
+                    <label>1<input type="radio" name="ang2" value="1"></label>
+                    <label>2<input type="radio" name="ang2" value="2"></label>
+                    <label>3<input type="radio" name="ang2" value="3"></label>
+                    <label>4<input type="radio" name="ang2" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">3. Обида, чувство несправедливости</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="ang3" value="0" required></label>
+                    <label>1<input type="radio" name="ang3" value="1"></label>
+                    <label>2<input type="radio" name="ang3" value="2"></label>
+                    <label>3<input type="radio" name="ang3" value="3"></label>
+                    <label>4<input type="radio" name="ang3" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">4. Злость</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="ang4" value="0" required></label>
+                    <label>1<input type="radio" name="ang4" value="1"></label>
+                    <label>2<input type="radio" name="ang4" value="2"></label>
+                    <label>3<input type="radio" name="ang4" value="3"></label>
+                    <label>4<input type="radio" name="ang4" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">5. Раздражение по мелочам</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="ang5" value="0" required></label>
+                    <label>1<input type="radio" name="ang5" value="1"></label>
+                    <label>2<input type="radio" name="ang5" value="2"></label>
+                    <label>3<input type="radio" name="ang5" value="3"></label>
+                    <label>4<input type="radio" name="ang5" value="4"></label>
+                </div>
+            </li>
+        </ul>
+        
+        <!-- Позитивные чувства -->
         <div class="question-block">
             <h2>Позитивные чувства</h2>
-            <div class="question">
-                <label>Чувствую, что я ценен(на)
-                    <input type="radio" name="pos1" value="0" required>0
-                    <input type="radio" name="pos1" value="1">1
-                    <input type="radio" name="pos1" value="2">2
-                    <input type="radio" name="pos1" value="3">3
-                    <input type="radio" name="pos1" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Хорошо отношусь к себе
-                    <input type="radio" name="pos2" value="0" required>0
-                    <input type="radio" name="pos2" value="1">1
-                    <input type="radio" name="pos2" value="2">2
-                    <input type="radio" name="pos2" value="3">3
-                    <input type="radio" name="pos2" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Чувствую близость с людьми
-                    <input type="radio" name="pos3" value="0" required>0
-                    <input type="radio" name="pos3" value="1">1
-                    <input type="radio" name="pos3" value="2">2
-                    <input type="radio" name="pos3" value="3">3
-                    <input type="radio" name="pos3" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Есть ощущение, что я чего-то добиваюсь
-                    <input type="radio" name="pos4" value="0" required>0
-                    <input type="radio" name="pos4" value="1">1
-                    <input type="radio" name="pos4" value="2">2
-                    <input type="radio" name="pos4" value="3">3
-                    <input type="radio" name="pos4" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Есть желание действовать
-                    <input type="radio" name="pos5" value="0" required>0
-                    <input type="radio" name="pos5" value="1">1
-                    <input type="radio" name="pos5" value="2">2
-                    <input type="radio" name="pos5" value="3">3
-                    <input type="radio" name="pos5" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Спокоен(на), расслаблен(а)
-                    <input type="radio" name="pos6" value="0" required>0
-                    <input type="radio" name="pos6" value="1">1
-                    <input type="radio" name="pos6" value="2">2
-                    <input type="radio" name="pos6" value="3">3
-                    <input type="radio" name="pos6" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Чувствую духовную связь с другими
-                    <input type="radio" name="pos7" value="0" required>0
-                    <input type="radio" name="pos7" value="1">1
-                    <input type="radio" name="pos7" value="2">2
-                    <input type="radio" name="pos7" value="3">3
-                    <input type="radio" name="pos7" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Чувствую надежду
-                    <input type="radio" name="pos8" value="0" required>0
-                    <input type="radio" name="pos8" value="1">1
-                    <input type="radio" name="pos8" value="2">2
-                    <input type="radio" name="pos8" value="3">3
-                    <input type="radio" name="pos8" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Вдохновлён(а), оптимистичен(на)
-                    <input type="radio" name="pos9" value="0" required>0
-                    <input type="radio" name="pos9" value="1">1
-                    <input type="radio" name="pos9" value="2">2
-                    <input type="radio" name="pos9" value="3">3
-                    <input type="radio" name="pos9" value="4">4
-                </label>
-            </div>
-            <div class="question">
-                <label>Жизнь кажется удовлетворяющей
-                    <input type="radio" name="pos10" value="0" required>0
-                    <input type="radio" name="pos10" value="1">1
-                    <input type="radio" name="pos10" value="2">2
-                    <input type="radio" name="pos10" value="3">3
-                    <input type="radio" name="pos10" value="4">4
-                </label>
+            <div class="radio-options">
+                <label>0 — Вовсе нет<input type="radio" name="pos_overall" value="0" required></label>
+                <label>1 — Немного<input type="radio" name="pos_overall" value="1"></label>
+                <label>2 — Умеренно<input type="radio" name="pos_overall" value="2"></label>
+                <label>3 — Сильно<input type="radio" name="pos_overall" value="3"></label>
+                <label>4 — Чрезвычайно<input type="radio" name="pos_overall" value="4"></label>
             </div>
         </div>
 
-        <button id="submitBtn">Показать результат</button>
-    </div>
+        <ul class="question-list">
+            <li class="question-item">
+                <span class="question-text">1. Я чувствую себя ценным</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="pos1" value="0" required></label>
+                    <label>1<input type="radio" name="pos1" value="1"></label>
+                    <label>2<input type="radio" name="pos1" value="2"></label>
+                    <label>3<input type="radio" name="pos1" value="3"></label>
+                    <label>4<input type="radio" name="pos1" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">2. Я хорошо отношусь к себе</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="pos2" value="0" required></label>
+                    <label>1<input type="radio" name="pos2" value="1"></label>
+                    <label>2<input type="radio" name="pos2" value="2"></label>
+                    <label>3<input type="radio" name="pos2" value="3"></label>
+                    <label>4<input type="radio" name="pos2" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">3. Я чувствую близость к людям</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="pos3" value="0" required></label>
+                    <label>1<input type="radio" name="pos3" value="1"></label>
+                    <label>2<input type="radio" name="pos3" value="2"></label>
+                    <label>3<input type="radio" name="pos3" value="3"></label>
+                    <label>4<input type="radio" name="pos3" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">4. Я чувствую, что добиваюсь чего-то</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="pos4" value="0" required></label>
+                    <label>1<input type="radio" name="pos4" value="1"></label>
+                    <label>2<input type="radio" name="pos4" value="2"></label>
+                    <label>3<input type="radio" name="pos4" value="3"></label>
+                    <label>4<input type="radio" name="pos4" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">5. У меня есть мотивация что-то делать</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="pos5" value="0" required></label>
+                    <label>1<input type="radio" name="pos5" value="1"></label>
+                    <label>2<input type="radio" name="pos5" value="2"></label>
+                    <label>3<input type="radio" name="pos5" value="3"></label>
+                    <label>4<input type="radio" name="pos5" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">6. Я чувствую себя спокойно и расслабленно</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="pos6" value="0" required></label>
+                    <label>1<input type="radio" name="pos6" value="1"></label>
+                    <label>2<input type="radio" name="pos6" value="2"></label>
+                    <label>3<input type="radio" name="pos6" value="3"></label>
+                    <label>4<input type="radio" name="pos6" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">7. Я чувствую духовную связь с другими</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="pos7" value="0" required></label>
+                    <label>1<input type="radio" name="pos7" value="1"></label>
+                    <label>2<input type="radio" name="pos7" value="2"></label>
+                    <label>3<input type="radio" name="pos7" value="3"></label>
+                    <label>4<input type="radio" name="pos7" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">8. Я чувствую надежду</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="pos8" value="0" required></label>
+                    <label>1<input type="radio" name="pos8" value="1"></label>
+                    <label>2<input type="radio" name="pos8" value="2"></label>
+                    <label>3<input type="radio" name="pos8" value="3"></label>
+                    <label>4<input type="radio" name="pos8" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">9. Я чувствую воодушевление и оптимизм</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="pos9" value="0" required></label>
+                    <label>1<input type="radio" name="pos9" value="1"></label>
+                    <label>2<input type="radio" name="pos9" value="2"></label>
+                    <label>3<input type="radio" name="pos9" value="3"></label>
+                    <label>4<input type="radio" name="pos9" value="4"></label>
+                </div>
+            </li>
+            <li class="question-item">
+                <span class="question-text">10. Моя жизнь меня устраивает</span>
+                <div class="radio-options">
+                    <label>0<input type="radio" name="pos10" value="0" required></label>
+                    <label>1<input type="radio" name="pos10" value="1"></label>
+                    <label>2<input type="radio" name="pos10" value="2"></label>
+                    <label>3<input type="radio" name="pos10" value="3"></label>
+                    <label>4<input type="radio" name="pos10" value="4"></label>
+                </div>
+            </li>
+        </ul>
 
-    <div class="result" id="resultDiv">
-        <h2>Ваш результат</h2>
-        <p id="date"></p>
-        <p class="score" id="depScore"></p>
-        <p class="score" id="anxScore"></p>
-        <p class="score" id="angScore"></p>
-        <p class="score" id="posScore"></p>
-        <p class="score" id="overallScore"></p>
+        <button type="submit">Показать результат</button>
+    </form>
+    
+    <div class="result" id="results">
+        <h2>Результаты</h2>
+        <div class="score">Сумма баллов за депрессию: <span id="depression-score"></span></div>
+        <div class="score">Сумма баллов за тревогу: <span id="anxiety-score"></span></div>
+        <div class="score">Сумма баллов за злость: <span id="anger-score"></span></div>
+        <div class="score">Сумма баллов за позитивные чувства: <span id="positive-score"></span></div>
     </div>
 </div>
 
 <script>
-function getRadioValue(name){
-    const radios = document.getElementsByName(name);
-    for(let r of radios){
-        if(r.checked) return parseInt(r.value);
-    }
-    return 0;
-}
+    const form = document.getElementById('mood-survey');
+    const results = document.getElementById('results');
 
-document.getElementById('submitBtn').onclick = function(){
-    const dep = getRadioValue('dep1') + getRadioValue('dep2') + getRadioValue('dep3') + getRadioValue('dep4') + getRadioValue('dep5');
-    const anx = getRadioValue('anx1') + getRadioValue('anx2') + getRadioValue('anx3') + getRadioValue('anx4') + getRadioValue('anx5');
-    const ang = getRadioValue('ang1') + getRadioValue('ang2') + getRadioValue('ang3') + getRadioValue('ang4') + getRadioValue('ang5');
-    const pos = getRadioValue('pos1') + getRadioValue('pos2') + getRadioValue('pos3') + getRadioValue('pos4') + getRadioValue('pos5') +
-                getRadioValue('pos6') + getRadioValue('pos7') + getRadioValue('pos8') + getRadioValue('pos9') + getRadioValue('pos10');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-    function interpret(score, type){
-        if(type==='dep'){
-            if(score<=7) return 'Низкая депрессия';
-            if(score<=14) return 'Средняя депрессия';
-            return 'Высокая депрессия';
-        }
-        if(type==='anx'){
-            if(score<=7) return 'Низкая тревога';
-            if(score<=14) return 'Средняя тревога';
-            return 'Высокая тревога';
-        }
-        if(type==='ang'){
-            if(score<=7) return 'Низкая злость';
-            if(score<=14) return 'Средняя злость';
-            return 'Высокая злость';
-        }
-        if(type==='pos'){
-            if(score<=10) return 'Низкий позитив';
-            if(score<=25) return 'Средний позитив';
-            return 'Высокий позитив';
-        }
-    }
+        const getScores = (namePrefix) => {
+            let total = 0;
+            for (let i = 1; i <= 10; i++) {
+                const name = `${namePrefix}${i}`;
+                const checkedRadio = document.querySelector(`input[name="${name}"]:checked`);
+                if (checkedRadio) {
+                    total += parseInt(checkedRadio.value);
+                }
+            }
+            return total;
+        };
 
-    const now = new Date();
-    document.getElementById('date').innerText = 'Дата прохождения: ' + now.toLocaleString();
-    document.getElementById('depScore').innerText = 'Депрессия: ' + dep + ' → ' + interpret(dep,'dep');
-    document.getElementById('anxScore').innerText = 'Тревога: ' + anx + ' → ' + interpret(anx,'anx');
-    document.getElementById('angScore').innerText = 'Злость: ' + ang + ' → ' + interpret(ang,'ang');
-    document.getElementById('posScore').innerText = 'Позитив: ' + pos + ' → ' + interpret(pos,'pos');
+        const depScore = getScores('dep');
+        const anxScore = getScores('anx');
+        const angScore = getScores('ang');
+        const posScore = getScores('pos');
 
-    const overall = dep + anx + ang - pos;
-    document.getElementById('overallScore').innerText = 'Общий уровень настроения: ' + overall;
+        document.getElementById('depression-score').textContent = depScore;
+        document.getElementById('anxiety-score').textContent = anxScore;
+        document.getElementById('anger-score').textContent = angScore;
+        document.getElementById('positive-score').textContent = posScore;
 
-    document.getElementById('quiz').style.display = 'none';
-    document.getElementById('resultDiv').style.display = 'block';
-};
+        results.style.display = 'block';
+    });
 </script>
+
 </body>
 </html>
