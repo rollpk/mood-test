@@ -6,16 +6,17 @@
     <title>Опрос настроения</title>
     <style>
         :root {
-            --bg-color: #1a1a2e; /* Более тёмный фон */
-            --container-bg-color: #2a2a3e; /* Фон основного блока */
-            --section-bg-color: #3e4a5e; /* Фон для отдельных рамок */
+            --bg-color: #1a1a2e;
+            --container-bg-color: #2a2a3e;
+            --section-bg-color: #3e4a5e;
             --text-color: #e0e0e0;
             --title-color: #fff;
-            --button-color: #4A90E2; /* Яркий синий */
+            --button-color: #4A90E2;
             --button-hover-color: #357ABD;
-            --border-color-dep: #D13E4E; /* Красный для депрессии */
-            --border-color-anx: #FFA500; /* Оранжевый для тревоги */
-            --border-color-pos: #50C878; /* Зелёный для позитива */
+            --border-color-dep: #D13E4E;
+            --border-color-anx: #FFA500;
+            --border-color-pos: #50C878;
+            --selected-bg-color: #4a5a6e; /* Цвет выбранной кнопки */
         }
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -111,10 +112,17 @@
             cursor: pointer;
             width: 17%;
             box-sizing: border-box;
-            background-color: #4a5a6e;
+            background-color: #4a5a6e; /* Цвет фона невыбранной кнопки */
             text-align: center;
             position: relative;
         }
+        .radio-options label span {
+            font-size: 1.1rem; /* Цифры побольше */
+            font-weight: bold;
+            color: var(--text-color);
+            transition: color 0.3s;
+        }
+        /* Стиль при наведении */
         .radio-options label:hover {
             background-color: #5d6d7e;
             transform: translateY(-2px);
@@ -123,11 +131,29 @@
             position: absolute;
             opacity: 0;
             cursor: pointer;
-        }
-        .radio-options input[type="radio"]:checked + span {
+        }   /* Стиль для фона выбранной кнопки */
+        .radio-options input[type="radio"]:checked ~ span {
             color: var(--button-color);
+        }
+        /* Стиль для цифр */
+        .radio-options label span {
+            font-size: 1.1rem;
             font-weight: bold;
+            color: var(--text-color);
+            transition: color 0.3s;
+        }
+        .radio-options input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        /* Стили для выбранной кнопки */
+        .radio-options input[type="radio"]:checked + span {
+            color: var(--button-color); /* Цвет цифры становится синим */
             transform: scale(1.1);
+        }
+        .radio-options label:has(input[type="radio"]:checked) {
+            background-color: var(--button-color); /* Фон кнопки становится синим */
         }
         button {
             margin-top: 30px;
@@ -168,6 +194,15 @@
             text-align: right;
             margin-top: 15px;
         }
+        .score-description {
+            font-size: 1rem;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #4a5a6e;
+            border-radius: 8px;
+            border-left: 3px solid var(--button-color);
+        }
+        /* Адаптивные стили */
         @media (max-width: 768px) {
             .container {
                 margin: 10px;
@@ -177,13 +212,20 @@
                 margin-top: 20px;
                 padding: 15px;
             }
+            .radio-options {
+                justify-content: space-between;
+                gap: 5px;
+            }
             .radio-options label {
-                width: 30%;
+                width: 18%; /* Оптимизированный размер для 5 кнопок в ряд */
                 font-size: 0.8rem;
                 padding: 10px 5px;
             }
             h1 { font-size: 1.8rem; }
             h2 { font-size: 1.3rem; }
+            .radio-options label span {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -391,10 +433,13 @@
 
 <div class="container result" id="result-container">
     <h2>Ваш результат:</h2>
-    <p>Общий балл по депрессии: <span class="score" id="score-dep">0</span></p>
-    <p>Общий балл по тревоге: <span class="score" id="score-anx">0</span></p>
-    <p>Общий балл по позитивным чувствам: <span class="score" id="score-pos">0</span></p>
+    <p>Общий балл по депрессии: <span class="score" id="score-dep">0</span> из <span class="score" id="max-score-dep"></span></p>
+    <p>Общий балл по тревоге: <span class="score" id="score-anx">0</span> из <span class="score" id="max-score-anx"></span></p>
+    <p>Общий балл по позитивным чувствам: <span class="score" id="score-pos">0</span> из <span class="score" id="max-score-pos"></span></p>
     <p id="result-datetime"></p>
+    <div class="score-description" id="description-dep"></div>
+    <div class="score-description" id="description-anx"></div>
+    <div class="score-description" id="description-pos"></div>
 </div>
 
 <script>
@@ -424,16 +469,50 @@
             const selected = form.elements[name].value;
             if (selected) posScore += parseInt(selected);
         });
-        
+
+        const maxDepScore = depQuestions.length * 4;
+        const maxAnxScore = anxQuestions.length * 4;
+        const maxPosScore = posQuestions.length * 4;
+
+        // Определяем описания
+        function getDepDescription(score) {
+            if (score <= 5) return 'У вас низкий уровень подавленности. Это нормальное состояние.';
+            if (score <= 10) return 'У вас умеренный уровень подавленности. Возможно, стоит обратить внимание на своё состояние.';
+            return 'У вас высокий уровень подавленности. Рекомендуется проконсультироваться со специалистом.';
+        }
+
+        function getAnxDescription(score) {
+            if (score <= 4) return 'У вас низкий уровень тревожности. Вы чувствуете себя спокойно.';
+            if (score <= 8) return 'У вас умеренный уровень тревожности. Возможны периодические переживания.';
+            return 'У вас высокий уровень тревожности. Важно найти способы расслабиться и справиться со стрессом.';
+        }
+
+        function getPosDescription(score) {
+            if (score <= 10) return 'У вас низкий уровень позитивных чувств. Постарайтесь найти больше поводов для радости.';
+            if (score <= 20) return 'У вас средний уровень позитивных чувств. Вы находитесь в сбалансированном состоянии.';
+            return 'У вас высокий уровень позитивных чувств. Вы находитесь в очень хорошем эмоциональном состоянии.';
+        }
+
+        // Получаем текущую дату и время
         const now = new Date();
         const formattedDate = `${('0' + now.getDate()).slice(-2)}.${('0' + (now.getMonth() + 1)).slice(-2)}.${now.getFullYear()}`;
         const formattedTime = `${('0' + now.getHours()).slice(-2)}:${('0' + now.getMinutes()).slice(-2)}`;
         
+        // Обновляем баллы и дату/время
         document.getElementById('score-dep').textContent = depScore;
         document.getElementById('score-anx').textContent = anxScore;
         document.getElementById('score-pos').textContent = posScore;
+        document.getElementById('max-score-dep').textContent = maxDepScore;
+        document.getElementById('max-score-anx').textContent = maxAnxScore;
+        document.getElementById('max-score-pos').textContent = maxPosScore;
         document.getElementById('result-datetime').textContent = `Дата и время прохождения: ${formattedDate} в ${formattedTime}`;
 
+        // Обновляем описания
+        document.getElementById('description-dep').textContent = getDepDescription(depScore);
+        document.getElementById('description-anx').textContent = getAnxDescription(anxScore);
+        document.getElementById('description-pos').textContent = getPosDescription(posScore);
+
+        // Показываем результаты и прокручиваем страницу
         document.getElementById('result-container').style.display = 'block';
         document.getElementById('result-container').scrollIntoView({ behavior: 'smooth' });
     });
