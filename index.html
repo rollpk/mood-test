@@ -6,6 +6,10 @@
     <title>Опрос настроения</title>
     <style>
         :root {
+
+
+
+
             /* Общие цвета */
             --bg-color: #1a1a2e;
             --container-bg-color: #2a2a3e;
@@ -16,6 +20,10 @@
             --button-hover-color: #357ABD;
             --selected-bg-color: #4a5a6e;
             
+          
+          
+          
+          
             /* Цвета границ для разных секций */
             --border-color-dep: #D13E4E; /* Депрессия */
             --border-color-anx: #FFA500; /* Тревога (оранжевый) */
@@ -23,6 +31,12 @@
             --border-color-happy: #50C878; /* Счастье (изумрудно-зеленый) */
             --border-color-phys: #9370DB; /* Физические симптомы (средний фиолетовый) */
             --border-color-rel: #40E0D0; /* Отношения (бирюзовый) */
+
+
+
+
+
+
         }
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -70,6 +84,11 @@
             margin-top: 40px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
         }
+
+
+
+
+
               /* Стиль для блока с описанием результата */
         .score-description {
             font-size: 1rem;
@@ -79,6 +98,14 @@
             border-radius: 8px;
             border-left: 3px solid var(--button-color);
             color: var(--text-color);
+
+
+
+
+
+
+
+
         }
      
         /* Привязка цветов границ к секциям через data-category атрибут */
@@ -147,14 +174,46 @@
             color: var(--text-color);
             transition: color 0.3s, transform 0.2s;
         }
+      
+      
+      
+      
+      
         /* Стили для выбранной кнопки */
-        .radio-options input[type="radio"]:checked + span {
-            color: var(--button-color); /* Цвет цифры становится синим */
-            transform: scale(1.1);
-        }
-        .radio-options label:has(input[type="radio"]:checked) {
-            background-color: var(--button-color); /* Фон кнопки становится синим */
-        }
+        .radio-options input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.radio-options label {
+  display: inline-block;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 8px;
+  background-color: #2c3e50;
+  color: #fff;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.radio-options label span {
+  font-size: 1.1rem;
+}
+
+.radio-options input[type="radio"]:checked + span {
+  color: #fff; /* цвет цифры */
+}
+
+.radio-options label:has(input[type="radio"]:checked) {
+  background-color: #4a90e2; /* синий фон */
+  transform: scale(1.05);
+}
+
+      
+      
+      
+      
         button {
             margin-top: 30px;
             padding: 15px 25px;
@@ -200,6 +259,11 @@
             text-align: right;
             margin-top: 15px;
         }
+      
+      
+      
+      
+      
         /* Адаптивные стили */
         @media (max-width: 768px) {
             .container { margin: 10px; padding: 20px; }
@@ -324,6 +388,12 @@ document.getElementById('mood-survey').addEventListener('submit', function(event
 
     const form = event.target;
 
+  
+  
+  
+  
+  
+  
     // Списки вопросов
     const depQuestions = ['q_dep_1','q_dep_2','q_dep_3','q_dep_4','q_dep_5','q_dep_6','q_dep_7','q_dep_8','q_dep_9'];
     const anxQuestions = ['q_anx_1','q_anx_2','q_anx_3','q_anx_4','q_anx_5'];
@@ -332,6 +402,12 @@ document.getElementById('mood-survey').addEventListener('submit', function(event
     const physQuestions = ['q_phys_1','q_phys_2','q_phys_3','q_phys_4','q_phys_5'];
     const relQuestions = ['q_rel_1','q_rel_2','q_rel_3','q_rel_4','q_rel_5'];
 
+  
+  
+  
+  
+  
+  
     // Подсчет баллов
     function calculateScore(names) {
         let score = 0;
@@ -349,6 +425,14 @@ document.getElementById('mood-survey').addEventListener('submit', function(event
     const physScore = calculateScore(physQuestions);
     const relScore = calculateScore(relQuestions);
 
+  
+  
+  
+  
+  
+  
+  
+  
     // Описания
     function getDepDescription(score) {
         if (score <= 9) return 'У вас низкий уровень подавленности. Это нормальное состояние.';
@@ -385,6 +469,14 @@ document.getElementById('mood-survey').addEventListener('submit', function(event
         if (score <= 10) return 'Средний уровень удовлетворенности отношениями. Есть и плюсы, и сложности.';
         return 'Высокий уровень удовлетворенности отношениями. Вы чувствуете поддержку и близость.';
     }
+  
+  
+  
+  
+  
+  
+  
+  
 
     // Отображение результатов
     const resultContentDiv = document.getElementById('result-content');
@@ -411,6 +503,16 @@ document.getElementById('mood-survey').addEventListener('submit', function(event
     createResultElementWithDescription('Физические симптомы', physScore, getPhysDescription(physScore));
     createResultElementWithDescription('Отношения', relScore, getRelDescription(relScore));
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
     // Добавляем дату и время
     const now = new Date();
     document.getElementById('result-datetime').textContent =
