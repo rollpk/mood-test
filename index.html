@@ -296,7 +296,26 @@
           
           
           
-          
+          .scale-container {
+    width: 100%;
+    height: 25px;
+    background: #eee;
+    border-radius: 12px;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.scale-bar {
+    height: 100%;
+    width: 0;
+    border-radius: 12px;
+    transition: width 0.5s, background-color 0.5s;
+    text-align: right;
+    padding-right: 5px;
+    color: #fff;
+    font-weight: bold;
+    line-height: 25px;
+}
           
           
           
@@ -425,9 +444,7 @@
       
       
     </form>
-
     <button type="submit" form="mood-survey">Подсчитать результаты</button>
-
     <div id="result" class="result">
         <h2>Результаты</h2>
         <div id="result-content"></div>
@@ -457,7 +474,8 @@ document.getElementById('mood-survey').addEventListener('submit', function(event
     const depQuestions = ['q_dep_1','q_dep_2','q_dep_3','q_dep_4','q_dep_5','q_dep_6','q_dep_7','q_dep_8','q_dep_9'];
     const anxQuestions = ['q_anx_1','q_anx_2','q_anx_3','q_anx_4','q_anx_5'];
     const angerQuestions = ['q_anger_1','q_anger_2','q_anger_3','q_anger_4','q_anger_5'];
-    const happyQuestions = ['q_happy_1','q_happy_2','q_happy_3','q_happy_4','q_happy_5','q_happy_6','q_happy_7','q_happy_8','q_happy_9','q_happy_10'];
+    const happyQuestions = 
+['q_happy_1','q_happy_2','q_happy_3','q_happy_4','q_happy_5','q_happy_6','q_happy_7','q_happy_8','q_happy_9','q_happy_10'];
     const physQuestions = ['q_phys_1','q_phys_2','q_phys_3','q_phys_4','q_phys_5'];
     const relQuestions = ['q_rel_1','q_rel_2','q_rel_3','q_rel_4','q_rel_5'];
 
@@ -486,6 +504,51 @@ document.getElementById('mood-survey').addEventListener('submit', function(event
 
   
   
+  
+  
+  
+  
+  
+  
+  // Функция, которая определяет уровень по баллам и числу вопросов
+function getLevel(score, questionsCount, levels) {
+    // Максимальный балл = кол-во вопросов * 4 (если 0-4 шкала)
+    const maxScore = questionsCount * 4;
+    const percent = (score / maxScore) * 100;
+
+    // levels = массив с названиями уровней по возрастанию
+    // Например: ['Очень низкий', 'Низкий', 'Средний', 'Высокий', 'Очень высокий']
+    const index = Math.min(
+        Math.floor(percent / (100 / levels.length)),
+        levels.length - 1
+    );
+    return levels[index];
+}
+
+// Примеры уровней для каждой группы
+const depLevels = ['Очень низкая', 'Низкая', 'Средняя', 'Высокая', 'Очень высокая'];
+const anxLevels = ['Очень низкая', 'Низкая', 'Средняя', 'Высокая', 'Очень высокая'];
+const angerLevels = ['Очень низкая', 'Низкая', 'Средняя', 'Высокая', 'Очень высокая'];
+const happyLevels = ['Очень низкий', 'Низкий', 'Средний', 'Высокий', 'Очень высокий'];
+const physLevels = ['Очень низкий', 'Низкий', 'Средний', 'Высокий', 'Очень высокий'];
+const relLevels = ['Очень низкий', 'Низкий', 'Средний', 'Высокий', 'Очень высокий'];
+
+// Используем с подсчитанными баллами
+const depLevel = getLevel(depScore, depQuestions.length, depLevels);
+const anxLevel = getLevel(anxScore, anxQuestions.length, anxLevels);
+const angerLevel = getLevel(angerScore, angerQuestions.length, angerLevels);
+const happyLevel = getLevel(happyScore, happyQuestions.length, happyLevels);
+const physLevel = getLevel(physScore, physQuestions.length, physLevels);
+const relLevel = getLevel(relScore, relQuestions.length, relLevels);
+
+// Пример вывода
+console.log(`Депрессия: ${depLevel} (${depScore} баллов)`);
+console.log(`Тревога: ${anxLevel} (${anxScore} баллов)`);
+console.log(`Злость: ${angerLevel} (${angerScore} баллов)`);
+console.log(`Счастье: ${happyLevel} (${happyScore} баллов)`);
+console.log(`Физические симптомы: ${physLevel} (${physScore} баллов)`);
+console.log(`Отношения: ${relLevel} (${relScore} баллов)`);
+
   
   
   
@@ -702,10 +765,13 @@ autoBtn.addEventListener('click', () => {
   
   
   
-  
-  
-  
-  document.getElementById("copyResultBtn").addEventListener("click", function() {
+
+
+
+
+
+
+document.getElementById("copyResultBtn").addEventListener("click", function() {
     const form = document.getElementById('mood-survey');
     const now = new Date();
     const dateTimeStr = now.toLocaleDateString('ru-RU', {
@@ -756,18 +822,39 @@ autoBtn.addEventListener('click', () => {
         q_rel_5: "Близость"
     };
 
+  
+  
+  
+  
+    // Группы вопросов для подсчета суммы и максимума
+    const groups = {
+        "Депрессия": ['q_dep_1','q_dep_2','q_dep_3','q_dep_4','q_dep_5','q_dep_6','q_dep_7','q_dep_8','q_dep_9'],
+        "Тревога": ['q_anx_1','q_anx_2','q_anx_3','q_anx_4','q_anx_5'],
+        "Злость": ['q_anger_1','q_anger_2','q_anger_3','q_anger_4','q_anger_5'],
+        "Счастье": ['q_happy_1','q_happy_2','q_happy_3','q_happy_4','q_happy_5','q_happy_6','q_happy_7','q_happy_8','q_happy_9','q_happy_10'],
+        "Физические симптомы": ['q_phys_1','q_phys_2','q_phys_3','q_phys_4','q_phys_5'],
+        "Отношения": ['q_rel_1','q_rel_2','q_rel_3','q_rel_4','q_rel_5']
+    };
+
     let text = `🧭 ТЕСТ НАСТРОЕНИЯ — по вопросам\n\n`;
 
-    Object.keys(questionLabels).forEach(q => {
-        const checked = form.querySelector(`input[name="${q}"]:checked`);
-        if (checked) {
-            text += `• ${questionLabels[q]}: ${checked.value}\n`;
-        } else {
-            text += `• ${questionLabels[q]}: —\n`;
-        }
-    });
+    for (const [groupName, questions] of Object.entries(groups)) {
+        let groupScore = 0;
+        let groupMax = questions.length * 4; // максимум по 0-4 шкале
 
-    text += `\n📅 Дата и время прохождения: ${dateTimeStr}`;
+        text += `=== ${groupName} ===\n`;
+
+        questions.forEach(q => {
+            const checked = form.querySelector(`input[name="${q}"]:checked`);
+            const val = checked ? parseInt(checked.value,10) : 0;
+            groupScore += val;
+            text += `• ${questionLabels[q]}: ${checked ? val : '-'}\n`;
+        });
+
+        text += `Сумма: ${groupScore}/${groupMax}\n\n`;
+    }
+
+    text += `📅 Дата и время прохождения: ${dateTimeStr}`;
 
     // Копируем текст
     const temp = document.createElement("textarea");
@@ -788,14 +875,12 @@ autoBtn.addEventListener('click', () => {
 });
 
 
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
 </script>
+
 
   
   
