@@ -622,7 +622,31 @@ function getDescription(scale, score) {
   
   
   
-// === 3. Отображение результатов с прогресс-барами ===
+function getSmoothColor(value, max, invert = false) {
+    const percent = value / max;
+    const p = invert ? 1 - percent : percent;
+
+    // мягкий градиент: зеленый → желтый → красный
+    const gradient = [
+        { pct: 0.0, color: [76, 175, 80] },   // зеленый
+        { pct: 0.5, color: [255, 235, 130] }, // желтый
+        { pct: 1.0, color: [240, 80, 60] }    // красный
+    ];
+
+    let i = 1;
+    while (i < gradient.length - 1 && p > gradient[i].pct) i++;
+
+    const lower = gradient[i - 1];
+    const upper = gradient[i];
+    const rangePct = (p - lower.pct) / (upper.pct - lower.pct);
+
+    const r = Math.round(lower.color[0] + (upper.color[0] - lower.color[0]) * rangePct);
+    const g = Math.round(lower.color[1] + (upper.color[1] - lower.color[1]) * rangePct);
+    const b = Math.round(lower.color[2] + (upper.color[2] - lower.color[2]) * rangePct);
+
+    return `rgb(${r},${g},${b})`;
+}
+
 const scores = {dep: depScore, anx: anxScore, anger: angerScore, happy: happyScore, phys: physScore, rel: relScore};
 const resultContentDiv = document.getElementById('result-content');
 resultContentDiv.innerHTML = '';
@@ -630,29 +654,45 @@ resultContentDiv.innerHTML = '';
 for (let scale in scores) {
     const score = scores[scale];
     const text = getDescription(scale, score);
-   const maxScore = {dep: 36, anx: 20, anger: 20, happy: 40, phys: 20, rel: 20};
-const percentage = Math.min(100, (score / maxScore[scale]) * 100);
+    const maxScore = {dep: 36, anx: 20, anger: 20, happy: 40, phys: 20, rel: 20};
+    const percentage = Math.min(100, (score / maxScore[scale]) * 100);
 
+    // Определяем направление цвета
+    let invertColor = false;
+    if (scale === 'happy' || scale === 'rel') invertColor = true;
 
-    let color = '#4CAF50';
-    if (scale === 'dep' || scale === 'anx' || scale === 'anger' || scale === 'phys') {
-        color = score > 10 ? '#f44336' : score > 5 ? '#ff9800' : '#4CAF50';
-    }
-    if (scale === 'happy' || scale === 'rel') {
-        color = score >= 30 ? '#4CAF50' : score >= 15 ? '#ff9800' : '#f44336';
-    }
+    const color = getSmoothColor(score, maxScore[scale], invertColor);
 
     const block = document.createElement('div');
-    block.style.marginBottom = '15px';
+    block.style.marginBottom = '25px';
     block.innerHTML = `
         <div style="font-weight:bold; margin-bottom:5px;">${scale.toUpperCase()}</div>
-        <div style="height:20px; border-radius:10px; background:#ddd; overflow:hidden; margin-bottom:5px;">
-            <div style="height:100%; width:${percentage}%; background-color:${color}; text-align:right; padding-right:5px; color:white; line-height:20px; font-size:12px; border-radius:10px;">${score}</div>
+        <div style="position:relative; height:20px; border-radius:12px; background:#ddd; overflow:hidden; margin-bottom:5px;">
+            <div style="height:100%; width:${percentage}%; background-color:${color}; border-radius:12px;"></div>
+            <div style="
+                position:absolute;
+                top:50%;
+                left:${percentage}%;
+                transform: translate(-50%, -50%);
+                width:28px;
+                height:28px;
+                border-radius:50%;
+                background-color:${color};
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-weight:bold;
+                font-size:14px;
+                color:white;
+            ">
+                ${score}
+            </div>
         </div>
         <div>${text}</div>
     `;
     resultContentDiv.appendChild(block);
 }
+
 
 
   
@@ -857,6 +897,7 @@ document.getElementById("copyResultBtn").addEventListener("click", function() {
             text += `• ${questionLabels[q]}: ${checked ? val : '-'}\n`;
         });
 
+      
         text += `Сумма: ${groupScore}/${groupMax}\n\n`;
     }
 
