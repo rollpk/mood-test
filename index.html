@@ -459,6 +459,7 @@
   
 <script>
   
+
 document.getElementById('mood-survey').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -618,6 +619,9 @@ function getDescription(scale, score) {
     return '';
 }
 
+  
+  
+  
 // === 3. Отображение результатов с прогресс-барами ===
 const scores = {dep: depScore, anx: anxScore, anger: angerScore, happy: happyScore, phys: physScore, rel: relScore};
 const resultContentDiv = document.getElementById('result-content');
@@ -626,7 +630,9 @@ resultContentDiv.innerHTML = '';
 for (let scale in scores) {
     const score = scores[scale];
     const text = getDescription(scale, score);
-    const percentage = Math.min(100, (score / 40) * 100); // шкала до 40
+   const maxScore = {dep: 36, anx: 20, anger: 20, happy: 40, phys: 20, rel: 20};
+const percentage = Math.min(100, (score / maxScore[scale]) * 100);
+
 
     let color = '#4CAF50';
     if (scale === 'dep' || scale === 'anx' || scale === 'anger' || scale === 'phys') {
@@ -880,9 +886,6 @@ document.getElementById("copyResultBtn").addEventListener("click", function() {
 
 
 </script>
-
-
-  
   
 </body>
 </html>
