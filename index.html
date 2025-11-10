@@ -289,6 +289,30 @@
           
           
           
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
     </style>
 </head>
 <body>
@@ -380,6 +404,26 @@
             </ul>
         </div>
         
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <div id="results" style="margin-top:20px;"></div>
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
     </form>
 
     <button type="submit" form="mood-survey">Подсчитать результаты</button>
@@ -397,6 +441,7 @@
   
   
 <script>
+  
 document.getElementById('mood-survey').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -447,75 +492,99 @@ document.getElementById('mood-survey').addEventListener('submit', function(event
   
   
   
-    // Описания
-    function getDepDescription(score) {
-        if (score <= 9) return 'У вас низкий уровень подавленности. Это нормальное состояние.';
-        if (score <= 18) return 'У вас умеренный уровень подавленности. Возможно, стоит обратить внимание на своё состояние.';
-        return 'У вас высокий уровень подавленности. Рекомендуется проконсультироваться со специалистом.';
+  
+  
+  
+  
+  
+  
+
+   // === 1. Описания для всех шкал ===
+const descriptions = {
+    dep: [
+        {max: 9, text: 'У вас низкий уровень подавленности. Это нормальное состояние.'},
+        {max: 18, text: 'У вас умеренный уровень подавленности. Возможно, стоит обратить внимание на своё состояние.'},
+        {max: Infinity, text: 'У вас высокий уровень подавленности. Рекомендуется проконсультироваться со специалистом.'}
+    ],
+    anx: [
+        {max: 5, text: 'У вас низкий уровень тревожности. Вы чувствуете себя спокойно.'},
+        {max: 10, text: 'У вас умеренный уровень тревожности. Возможны периодические переживания.'},
+        {max: Infinity, text: 'У вас высокий уровень тревожности. Важно найти способы расслабиться и справиться со стрессом.'}
+    ],
+    anger: [
+        {max: 5, text: 'У вас низкий уровень злости. Вы чувствуете себя спокойно.'},
+        {max: 10, text: 'У вас умеренный уровень раздражения. Иногда что-то задевает, но вы держите контроль.'},
+        {max: Infinity, text: 'У вас высокий уровень злости. Стоит освоить техники управления гневом.'}
+    ],
+    happy: [
+        {min: 30, text: 'У вас высокий уровень счастья! Отличное эмоциональное состояние.'},
+        {min: 15, text: 'У вас средний уровень счастья. В целом вы сбалансированы.'},
+        {min: 0, text: 'У вас низкий уровень счастья. Возможно, вы теряете связь с тем, что приносит удовольствие.'}
+    ],
+    phys: [
+        {max: 5, text: 'Мало физических симптомов. Тело в порядке.'},
+        {max: 10, text: 'Умеренные физические симптомы. Возможно, тело реагирует на стресс.'},
+        {max: Infinity, text: 'Высокий уровень физических симптомов. Стоит обратить внимание на отдых и здоровье.'}
+    ],
+    rel: [
+        {max: 5, text: 'Низкий уровень удовлетворенности отношениями. Есть темы, требующие внимания.'},
+        {max: 10, text: 'Средний уровень удовлетворенности отношениями. Есть и плюсы, и сложности.'},
+        {max: Infinity, text: 'Высокий уровень удовлетворенности отношениями. Вы чувствуете поддержку и близость.'}
+    ]
+};
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+// === 2. Функция для выбора описания ===
+function getDescription(scale, score) {
+    const rules = descriptions[scale];
+    for (let rule of rules) {
+        if ((rule.max !== undefined && score <= rule.max) || (rule.min !== undefined && score >= rule.min)) {
+            return rule.text;
+        }
+    }
+    return '';
+}
+
+// === 3. Отображение результатов с прогресс-барами ===
+const scores = {dep: depScore, anx: anxScore, anger: angerScore, happy: happyScore, phys: physScore, rel: relScore};
+const resultContentDiv = document.getElementById('result-content');
+resultContentDiv.innerHTML = '';
+
+for (let scale in scores) {
+    const score = scores[scale];
+    const text = getDescription(scale, score);
+    const percentage = Math.min(100, (score / 40) * 100); // шкала до 40
+
+    let color = '#4CAF50';
+    if (scale === 'dep' || scale === 'anx' || scale === 'anger' || scale === 'phys') {
+        color = score > 10 ? '#f44336' : score > 5 ? '#ff9800' : '#4CAF50';
+    }
+    if (scale === 'happy' || scale === 'rel') {
+        color = score >= 30 ? '#4CAF50' : score >= 15 ? '#ff9800' : '#f44336';
     }
 
-    function getAnxDescription(score) {
-        if (score <= 5) return 'У вас низкий уровень тревожности. Вы чувствуете себя спокойно.';
-        if (score <= 10) return 'У вас умеренный уровень тревожности. Возможны периодические переживания.';
-        return 'У вас высокий уровень тревожности. Важно найти способы расслабиться и справиться со стрессом.';
-    }
+    const block = document.createElement('div');
+    block.style.marginBottom = '15px';
+    block.innerHTML = `
+        <div style="font-weight:bold; margin-bottom:5px;">${scale.toUpperCase()}</div>
+        <div style="height:20px; border-radius:10px; background:#ddd; overflow:hidden; margin-bottom:5px;">
+            <div style="height:100%; width:${percentage}%; background-color:${color}; text-align:right; padding-right:5px; color:white; line-height:20px; font-size:12px; border-radius:10px;">${score}</div>
+        </div>
+        <div>${text}</div>
+    `;
+    resultContentDiv.appendChild(block);
+}
 
-    function getAngerDescription(score) {
-        if (score <= 5) return 'У вас низкий уровень злости. Вы чувствуете себя спокойно.';
-        if (score <= 10) return 'У вас умеренный уровень раздражения. Иногда что-то задевает, но вы держите контроль.';
-        return 'У вас высокий уровень злости. Стоит освоить техники управления гневом.';
-    }
-
-    function getHappyDescription(score) {
-        if (score >= 30) return 'У вас высокий уровень счастья! Отличное эмоциональное состояние.';
-        if (score >= 15) return 'У вас средний уровень счастья. В целом вы сбалансированы.';
-        return 'У вас низкий уровень счастья. Возможно, вы теряете связь с тем, что приносит удовольствие.';
-    }
-
-    function getPhysDescription(score) {
-        if (score <= 5) return 'Мало физических симптомов. Тело в порядке.';
-        if (score <= 10) return 'Умеренные физические симптомы. Возможно, тело реагирует на стресс.';
-        return 'Высокий уровень физических симптомов. Стоит обратить внимание на отдых и здоровье.';
-    }
-
-    function getRelDescription(score) {
-        if (score <= 5) return 'Низкий уровень удовлетворенности отношениями. Есть темы, требующие внимания.';
-        if (score <= 10) return 'Средний уровень удовлетворенности отношениями. Есть и плюсы, и сложности.';
-        return 'Высокий уровень удовлетворенности отношениями. Вы чувствуете поддержку и близость.';
-    }
-  
-  
-  
-  
-  
-  
-  
-  
-
-    // Отображение результатов
-    const resultContentDiv = document.getElementById('result-content');
-    if (!resultContentDiv) return;
-    resultContentDiv.innerHTML = '';
-
-    function createResultElementWithDescription(name, score, desc) {
-        const container = document.createElement('div');
-        container.classList.add('score-section-result');
-        container.innerHTML = `<strong>${name}:</strong> <span class="score">${score}</span>`;
-
-        const descElement = document.createElement('div');
-        descElement.classList.add('score-description');
-        descElement.textContent = desc;
-
-        resultContentDiv.appendChild(container);
-        resultContentDiv.appendChild(descElement);
-    }
-
-    createResultElementWithDescription('Депрессия', depScore, getDepDescription(depScore));
-    createResultElementWithDescription('Тревога', anxScore, getAnxDescription(anxScore));
-    createResultElementWithDescription('Злость', angerScore, getAngerDescription(angerScore));
-    createResultElementWithDescription('Счастье', happyScore, getHappyDescription(happyScore));
-    createResultElementWithDescription('Физические симптомы', physScore, getPhysDescription(physScore));
-    createResultElementWithDescription('Отношения', relScore, getRelDescription(relScore));
 
   
   
@@ -558,6 +627,8 @@ autoBtn.type = 'button';
 document.querySelector('button[type="submit"]').after(autoBtn);
 
 autoBtn.addEventListener('click', () => {
+ 
+  
   // Находит все вопросы и случайно отмечает один ответ
   const questions = document.querySelectorAll('input[type="radio"]');
   const grouped = {};
@@ -588,6 +659,145 @@ autoBtn.addEventListener('click', () => {
   
 
 </script>
- 
+  
+  
+  
+  
+  
+  
+  
+  
+  <!-- Кнопка копирования -->
+<div style="text-align:center; margin-top:20px;">
+  <button id="copyResultBtn" style="
+    background:#4b7bec;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+    transition:0.2s;
+  ">📋 Скопировать результат</button>
+</div>
+
+
+  
+<!-- Подсказка -->
+<p id="copyHint" style="text-align:center; font-size:0.9rem; color:#999; margin-top:8px;">
+После прохождения теста нажми и вставь в заметки или Телеграм
+</p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+<script>
+  
+  
+  
+  
+  
+  
+  document.getElementById("copyResultBtn").addEventListener("click", function() {
+    const form = document.getElementById('mood-survey');
+    const now = new Date();
+    const dateTimeStr = now.toLocaleDateString('ru-RU', {
+        year: 'numeric', month: 'long', day: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+    });
+
+    // Краткие формулировки для каждого вопроса
+    const questionLabels = {
+        q_dep_1: "Грусть",
+        q_dep_2: "Потеря интереса",
+        q_dep_3: "Энергия низкая",
+        q_dep_4: "Аппатия",
+        q_dep_5: "Пессимизм",
+        q_dep_6: "Раздражительность",
+        q_dep_7: "Социальная замкнутость",
+        q_dep_8: "Сон",
+        q_dep_9: "Аппетит",
+        q_anx_1: "Тревога",
+        q_anx_2: "Беспокойство",
+        q_anx_3: "Нервозность",
+        q_anx_4: "Напряжение",
+        q_anx_5: "Страхи",
+        q_anger_1: "Раздражение",
+        q_anger_2: "Гнев",
+        q_anger_3: "Недовольство",
+        q_anger_4: "Вспышки",
+        q_anger_5: "Нетерпимость",
+        q_happy_1: "Радость",
+        q_happy_2: "Удовольствие",
+        q_happy_3: "Энергия",
+        q_happy_4: "Уверенность",
+        q_happy_5: "Оптимизм",
+        q_happy_6: "Вдохновение",
+        q_happy_7: "Смех",
+        q_happy_8: "Удовлетворение",
+        q_happy_9: "Спокойствие",
+        q_happy_10: "Баланс",
+        q_phys_1: "Боли",
+        q_phys_2: "Головная боль",
+        q_phys_3: "Усталость",
+        q_phys_4: "Напряжение тела",
+        q_phys_5: "Сонливость",
+        q_rel_1: "Отношения",
+        q_rel_2: "Поддержка",
+        q_rel_3: "Доверие",
+        q_rel_4: "Конфликты",
+        q_rel_5: "Близость"
+    };
+
+    let text = `🧭 ТЕСТ НАСТРОЕНИЯ — по вопросам\n\n`;
+
+    Object.keys(questionLabels).forEach(q => {
+        const checked = form.querySelector(`input[name="${q}"]:checked`);
+        if (checked) {
+            text += `• ${questionLabels[q]}: ${checked.value}\n`;
+        } else {
+            text += `• ${questionLabels[q]}: —\n`;
+        }
+    });
+
+    text += `\n📅 Дата и время прохождения: ${dateTimeStr}`;
+
+    // Копируем текст
+    const temp = document.createElement("textarea");
+    temp.value = text;
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand("copy");
+    document.body.removeChild(temp);
+
+    // Подсказка
+    const hint = document.getElementById("copyHint");
+    hint.innerText = "✅ Скопировано! Вставь в заметки или отправь в Телеграм.";
+    hint.style.color = "#50C878";
+    setTimeout(() => {
+        hint.innerText = "После прохождения теста нажми и вставь в заметки или Телеграм";
+        hint.style.color = "#999";
+    }, 4000);
+});
+
+
+  
+  
+  
+  
+  
+  
+  
+</script>
+
+  
+  
 </body>
 </html>
