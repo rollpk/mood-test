@@ -626,11 +626,15 @@ function getSmoothColor(value, max, invert = false) {
     const percent = value / max;
     const p = invert ? 1 - percent : percent;
 
+  
+  
+  
+  
     // мягкий градиент: зеленый → желтый → красный
     const gradient = [
         { pct: 0.0, color: [76, 175, 80] },   // зеленый
-        { pct: 0.5, color: [255, 235, 130] }, // желтый
-        { pct: 1.0, color: [240, 80, 60] }    // красный
+        { pct: 0.5, color: [255, 193, 7] }, // желтый
+        { pct: 1.0, color: [244, 67, 54] }    // красный
     ];
 
     let i = 1;
@@ -657,6 +661,12 @@ for (let scale in scores) {
     const maxScore = {dep: 36, anx: 20, anger: 20, happy: 40, phys: 20, rel: 20};
     const percentage = Math.min(100, (score / maxScore[scale]) * 100);
 
+  
+  
+  
+  
+  
+  
     // Определяем направление цвета
     let invertColor = false;
     if (scale === 'happy' || scale === 'rel') invertColor = true;
