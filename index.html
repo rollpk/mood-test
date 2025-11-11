@@ -864,21 +864,32 @@ document.addEventListener('DOMContentLoaded', function() {
   
   
   
-  
-<!-- Кнопка копирования -->
-<div style="display:flex; justify-content:center; margin-top:8px; margin-bottom:40px;">
-  <button id="copyResultBtn" style="
-    width: 100%;
-    max-width: 400px;        /* чтобы на ПК не растягивалась сильно */
-    background:#4b7bec;
-    color:white;
-    border:none;
-    padding:10px 20px;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:15px;
-    transition:0.2s;
-  ">📋 Скопировать результат</button>
+<style>
+#copyResultBtn {
+  width: 100%;
+  max-width: 400px;        /* ПК — не растягиваем */
+  background:#4b7bec;
+  color:white;
+  border:none;
+  padding:10px 20px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:15px;
+  transition:0.2s;
+}
+
+/* На телефоне делаем кнопку уже */
+@media (max-width: 480px) {
+  #copyResultBtn {
+    max-width: 250px;  /* уже кнопка */
+    padding:8px 16px;
+    font-size:14px;
+  }
+}
+</style>
+
+<div style="display:flex; justify-content:center; margin-top:10px; margin-bottom:40px;">
+  <button id="copyResultBtn">📋 Скопировать результат</button>
 </div>
 
 
