@@ -865,9 +865,11 @@ document.addEventListener('DOMContentLoaded', function() {
   
   
   
-  <!-- Кнопка копирования -->
-<div style="text-align:center; margin-top:20px;">
+<!-- Кнопка копирования -->
+<div style="text-align:center; margin-top:20px; margin-bottom:40px;">
   <button id="copyResultBtn" style="
+    width: calc(100% - 40px);  /* почти вся ширина блока, с отступами по бокам */
+    max-width: 400px;          /* чтобы на ПК не растягивалось слишком */
     background:#4b7bec;
     color:white;
     border:none;
@@ -876,7 +878,6 @@ document.addEventListener('DOMContentLoaded', function() {
     cursor:pointer;
     font-size:15px;
     transition:0.2s;
-    margin:0 auto 15px;
   ">📋 Скопировать результат</button>
 </div>
 
