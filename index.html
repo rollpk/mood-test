@@ -866,41 +866,19 @@ document.addEventListener('DOMContentLoaded', function() {
   
   
   <!-- Кнопка копирования -->
-<div class="copy-container">
-  <button id="copyResultBtn">📋 Скопировать результат</button>
+<div style="text-align:center; margin-bottom:20px; padding:0 20px;">
+  <button id="copyResultBtn" style="
+    background:#4b7bec;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+    width:70%;
+    max-width:350px;
+  ">📋 Скопировать результат</button>
 </div>
-
-<style>
-.copy-container {
-  text-align: center;
-  margin-top: 0 px;   /* расстояние от текста до кнопки */
-  margin-bottom: 0 px; /* расстояние от кнопки до низа экрана */
-  padding: 0 10px;    /* отступы от краёв на маленьких экранах */
-}
-
-#copyResultBtn {
-  background: #4b7bec;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 15px;
-  width: 300px;   /* базовая ширина для ПК */
-  max-width: 100%;
-  transition: 0.2s;
-}
-
-/* На маленьких экранах (телефоны) */
-@media (max-width: 500px) {
-  #copyResultBtn {
-    width: 50%;      /* почти во всю ширину */
-    padding: 12px 0;
-  }
-}
-</style>
-
-
   
 
 
