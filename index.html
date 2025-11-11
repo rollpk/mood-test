@@ -866,8 +866,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   
   <!-- Кнопка копирования -->
-<div style="text-align:center; margin-top:20px;">
-  <button id="copyResultBtn" style="
+<button id="copyResultBtn" style="
     background:#4b7bec;
     color:white;
     border:none;
@@ -876,7 +875,12 @@ document.addEventListener('DOMContentLoaded', function() {
     cursor:pointer;
     font-size:15px;
     transition:0.2s;
-  ">📋 Скопировать результат</button>
+    max-width:250px;       /* ограничиваем ширину на мобиле */
+    width:90%;             /* адаптивно растягивается чуть меньше экрана */
+    margin:0 auto 15px;    /* центрируем и добавляем отступ снизу */
+    display:block;
+">📋 Скопировать результат</button>
+  
 </div>
 
 
