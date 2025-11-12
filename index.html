@@ -368,41 +368,45 @@
       
       
       <!-- Группа 2: Суицидальные мысли (3 вопроса) -->
-<div class="question-section" data-category="anxiety">
-    <h2>Насколько у тебя сейчас есть суицидальные мысли?</h2>
+<!-- Группа 2: Суицидальные мысли (3 вопроса) -->
+<div class="question-section" data-category="sui">
+    <h2>Насколько у тебя сейчас присутствуют суицидальные мысли?</h2>
     <ul class="question-list">
         <li class="question-item">
             <span class="question-text">1. Бывает ли ощущение, что лучше было бы просто исчезнуть или умереть?</span>
             <div class="radio-options">
-                <label><input type="radio" name="q_anx_1" value="0" required><span>0</span></label>
-                <label><input type="radio" name="q_anx_1" value="1"><span>1</span></label>
-                <label><input type="radio" name="q_anx_1" value="2"><span>2</span></label>
-                <label><input type="radio" name="q_anx_1" value="3"><span>3</span></label>
-                <label><input type="radio" name="q_anx_1" value="4"><span>4</span></label>
+                <label><input type="radio" name="q_sui_1" value="0" required><span>0</span></label>
+                <label><input type="radio" name="q_sui_1" value="1"><span>1</span></label>
+                <label><input type="radio" name="q_sui_1" value="2"><span>2</span></label>
+                <label><input type="radio" name="q_sui_1" value="3"><span>3</span></label>
+                <label><input type="radio" name="q_sui_1" value="4"><span>4</span></label>
             </div>
         </li>
+
         <li class="question-item">
             <span class="question-text">2. Возникают ли мысли о смерти или самоубийстве?</span>
             <div class="radio-options">
-                <label><input type="radio" name="q_anx_2" value="0" required><span>0</span></label>
-                <label><input type="radio" name="q_anx_2" value="1"><span>1</span></label>
-                <label><input type="radio" name="q_anx_2" value="2"><span>2</span></label>
-                <label><input type="radio" name="q_anx_2" value="3"><span>3</span></label>
-                <label><input type="radio" name="q_anx_2" value="4"><span>4</span></label>
+                <label><input type="radio" name="q_sui_2" value="0" required><span>0</span></label>
+                <label><input type="radio" name="q_sui_2" value="1"><span>1</span></label>
+                <label><input type="radio" name="q_sui_2" value="2"><span>2</span></label>
+                <label><input type="radio" name="q_sui_2" value="3"><span>3</span></label>
+                <label><input type="radio" name="q_sui_2" value="4"><span>4</span></label>
             </div>
         </li>
+
         <li class="question-item">
-            <span class="question-text">3. Были ли у тебя реальные попытки или планы что-то сделать?</span>
+            <span class="question-text">3. Были ли у тебя реальные попытки или конкретные планы что-то сделать?</span>
             <div class="radio-options">
-                <label><input type="radio" name="q_anx_3" value="0" required><span>0</span></label>
-                <label><input type="radio" name="q_anx_3" value="1"><span>1</span></label>
-                <label><input type="radio" name="q_anx_3" value="2"><span>2</span></label>
-                <label><input type="radio" name="q_anx_3" value="3"><span>3</span></label>
-                <label><input type="radio" name="q_anx_3" value="4"><span>4</span></label>
+                <label><input type="radio" name="q_sui_3" value="0" required><span>0</span></label>
+                <label><input type="radio" name="q_sui_3" value="1"><span>1</span></label>
+                <label><input type="radio" name="q_sui_3" value="2"><span>2</span></label>
+                <label><input type="radio" name="q_sui_3" value="3"><span>3</span></label>
+                <label><input type="radio" name="q_sui_3" value="4"><span>4</span></label>
             </div>
         </li>
     </ul>
 </div>
+
 
       
 
@@ -595,6 +599,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Вопросы по шкалам
     const depQuestions = ['q_dep_1','q_dep_2','q_dep_3','q_dep_4','q_dep_5','q_dep_6','q_dep_7','q_dep_8','q_dep_9'];
+    const suiQuestions = ['q_sui_1','q_sui_2','q_sui_3'];
     const anxQuestions = ['q_anx_1','q_anx_2','q_anx_3','q_anx_4','q_anx_5'];
     const angerQuestions = ['q_anger_1','q_anger_2','q_anger_3','q_anger_4','q_anger_5'];
     const happyQuestions = ['q_happy_1','q_happy_2','q_happy_3','q_happy_4','q_happy_5','q_happy_6','q_happy_7','q_happy_8','q_happy_9','q_happy_10'];
@@ -615,6 +620,9 @@ document.addEventListener('DOMContentLoaded', function() {
         q_dep_7: "Социальная замкнутость",
         q_dep_8: "Нерешительность",
         q_dep_9: "Не нравлюсь себе",
+        q_sui_1: "Мысли о смерти 1",
+        q_sui_2: "Мысли о смерти 2",
+        q_sui_3: "Мысли о смерти 3",
         q_anx_1: "Тревога",
         q_anx_2: "Паника",
         q_anx_3: "Чувство опасности",
@@ -657,40 +665,68 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
   
-    // Описания для шкал
-    const descriptions = {
-        dep: [
-            {max: 9, text: 'Низкий уровень подавленности. Это нормальное состояние.'},
-            {max: 18, text: 'Умеренный уровень подавленности. Стоит обратить внимание на своё состояние.'},
-            {max: Infinity, text: 'Высокий уровень подавленности. Рекомендуется проконсультироваться со специалистом.'}
-        ],
-        anx: [
-            {max: 5, text: 'Низкий уровень тревожности. Вы чувствуете себя спокойно.'},
-            {max: 10, text: 'Умеренный уровень тревожности. Возможны периодические переживания.'},
-            {max: Infinity, text: 'Высокий уровень тревожности. Важно найти способы расслабиться и справиться со стрессом.'}
-        ],
-        anger: [
-            {max: 5, text: 'Низкий уровень злости. Вы чувствуете себя спокойно.'},
-            {max: 10, text: 'Умеренный уровень раздражения. Иногда что-то задевает, но контроль есть.'},
-            {max: Infinity, text: 'Высокий уровень злости. Освойте техники управления гневом.'}
-        ],
-        happy: [
-            {max: 14, text: 'Низкий уровень счастья. Возможно, теряете связь с тем, что приносит удовольствие.'},
-            {max: 29, text: 'Средний уровень счастья. В целом сбалансированы.'},
-            {max: Infinity, text: 'Высокий уровень счастья! Отличное эмоциональное состояние.'}
-        ],
-        phys: [
-            {max: 5, text: 'Мало физических симптомов. Тело в порядке.'},
-            {max: 10, text: 'Умеренные физические симптомы. Возможно, тело реагирует на стресс.'},
-            {max: Infinity, text: 'Высокий уровень физических симптомов. Обратите внимание на отдых и здоровье.'}
-        ],
-        rel: [
-            {max: 5, text: 'Низкий уровень удовлетворенности отношениями. Есть темы для работы.'},
-            {max: 10, text: 'Средний уровень удовлетворенности отношениями. Есть плюсы и сложности.'},
-            {max: Infinity, text: 'Высокий уровень удовлетворенности отношениями. Чувствуете поддержку и близость.'}
-        ]
-    };
+  
+    // Описания для шкал с 5 уровнями детализации
+const descriptions = {
+    dep: [
+        { max: 4, text: 'Очень низкий уровень подавленности. Настроение ровное, энергия в норме.' },
+        { max: 8, text: 'Небольшая подавленность. Иногда проскакивает грусть, но вы быстро восстанавливаетесь.' },
+        { max: 14, text: 'Умеренная подавленность. Есть усталость, потеря интереса, фон настроения снижен.' },
+        { max: 20, text: 'Выраженная подавленность. Тяжело радоваться, хочется уединиться.' },
+        { max: Infinity, text: 'Очень высокий уровень подавленности. Возможно, требуется поддержка или отдых.' }
+    ],
 
+  
+  sui: [
+    {max: 3, text: 'Мысли о смерти не беспокоят. Всё под контролем.'},
+    {max: 8, text: 'Иногда появляются тяжёлые мысли. Важно не оставаться с ними один на один.'},
+    {max: Infinity, text: 'Частые или навязчивые мысли о смерти. Это сигнал — нужно поговорить со специалистом.'}
+],
+  
+  
+    anx: [
+        { max: 4, text: 'Очень низкий уровень тревожности. Спокойны и уверены в себе.' },
+        { max: 8, text: 'Пограничная тревожность. Иногда волнуетесь, но держите контроль.' },
+        { max: 14, text: 'Умеренная тревожность. Периодически беспокойство мешает расслабиться.' },
+        { max: 20, text: 'Высокая тревожность. Часто внутреннее напряжение, трудно успокоиться.' },
+        { max: Infinity, text: 'Очень высокая тревожность. Возможны панические или телесные реакции на стресс.' }
+    ],
+
+    anger: [
+        { max: 4, text: 'Очень низкий уровень раздражения. Сохраняете спокойствие даже в сложных ситуациях.' },
+        { max: 8, text: 'Небольшое раздражение. Иногда что-то задевает, но не выходит из-под контроля.' },
+        { max: 14, text: 'Умеренный уровень злости. Бывают вспышки, но вы осознаёте и сдерживаете их.' },
+        { max: 20, text: 'Высокий уровень злости. Эмоции часто выходят наружу, сложно удержаться.' },
+        { max: Infinity, text: 'Очень высокий уровень агрессии. Возможно, стоит отдохнуть или поговорить об этом.' }
+    ],
+
+    happy: [
+        { max: 10, text: 'Очень низкий уровень радости. Мало удовольствия, трудно найти вдохновение.' },
+        { max: 20, text: 'Низкий уровень счастья. Есть хорошие моменты, но эмоциональный фон слабый.' },
+        { max: 30, text: 'Средний уровень счастья. Иногда радуетесь, иногда устаете — баланс есть.' },
+        { max: 38, text: 'Высокий уровень счастья. Часто чувствуете вдохновение, уверенность и удовольствие от жизни.' },
+        { max: Infinity, text: 'Очень высокий уровень счастья! Настроение отличное, вы полны энергии и позитива.' }
+    ],
+
+    phys: [
+        { max: 4, text: 'Почти нет физических симптомов. Тело расслаблено и спокойно.' },
+        { max: 8, text: 'Небольшое физическое напряжение. Иногда чувствуете усталость или зажимы.' },
+        { max: 14, text: 'Умеренные физические симптомы. Тело реагирует на стресс, но в целом вы справляетесь.' },
+        { max: 20, text: 'Выраженные физические симптомы. Часто чувствуете усталость, напряжение или боль.' },
+        { max: Infinity, text: 'Очень сильные физические проявления стресса. Нужен отдых и забота о теле.' }
+    ],
+
+    rel: [
+        { max: 4, text: 'Очень низкое качество отношений. Есть отдалённость или конфликты.' },
+        { max: 8, text: 'Низкий уровень удовлетворённости. Иногда чувствуете нехватку поддержки или доверия.' },
+        { max: 14, text: 'Средний уровень отношений. Есть и близость, и недопонимание.' },
+        { max: 20, text: 'Хороший уровень отношений. В целом чувствуете тепло, открытость и поддержку.' },
+        { max: Infinity, text: 'Очень высокий уровень гармонии в отношениях. Доверие, близость и взаимность сильны.' }
+    ]
+};
+
+
+  
   
   
   
@@ -702,33 +738,57 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Функция подсчёта баллов
-    function calculateScore(names) {
-        let score = 0;
-        names.forEach(name => {
-            const selected = form.querySelector(`input[name="${name}"]:checked`);
-            if(selected) score += parseInt(selected.value,10);
-        });
-        return score;
-    }
+ function calculateScore(names) {
+    let score = 0;
+    names.forEach(name => {
+        const selected = form.querySelector(`input[name="${name}"]:checked`);
+        if(selected) {
+            console.log(name, 'выбрано', selected.value);  // <-- добавили проверку
+            score += parseInt(selected.value,10);
+        } else {
+            console.log(name, 'ничего не выбрано');       // <-- если пусто
+        }
+    });
+    return score;
+}
 
-    // Функция градиента цвета
-    function getSmoothColor(value, max, invert=false) {
-        const p = invert ? 1 - value/max : value/max;
-        const gradient = [
-            {pct:0.0, color:[76,175,80]},   // зеленый
-            {pct:0.5, color:[255,193,7]},   // желтый
-            {pct:1.0, color:[244,67,54]}    // красный
-        ];
-        let i=1; while(i<gradient.length-1 && p>gradient[i].pct) i++;
-        const lower=gradient[i-1], upper=gradient[i];
-        const rangePct = (p-lower.pct)/(upper.pct-lower.pct);
-        const r=Math.round(lower.color[0]+(upper.color[0]-lower.color[0])*rangePct);
-        const g=Math.round(lower.color[1]+(upper.color[1]-lower.color[1])*rangePct);
-        const b=Math.round(lower.color[2]+(upper.color[2]-lower.color[2])*rangePct);
-        return `rgb(${r},${g},${b})`;
-    }
 
-    const maxScores = {dep:36, anx:20, anger:20, happy:40, phys:32, rel:36};
+   // Функция плавного цвета с расширенным градиентом
+function getSmoothColor(value, max, invert = false) {
+    const p = invert ? 1 - value / max : value / max;
+    const gradient = [
+        { pct: 0.0,  color: [33, 150, 243] },   // синий (#2196F3)
+        { pct: 0.15, color: [76, 175, 80] },    // зелёный (#4CAF50)
+        { pct: 0.3,  color: [139, 195, 74] },   // салатовый (#8BC34A)
+        { pct: 0.45, color: [255, 235, 59] },   // жёлтый (#FFEB3B)
+        { pct: 0.6,  color: [255, 193, 7] },    // янтарный (#FFC107)
+        { pct: 0.75, color: [255, 152, 0] },    // оранжевый (#FF9800)
+        { pct: 0.9,  color: [244, 67, 54] },    // красный (#F44336)
+        { pct: 1.0,  color: [156, 39, 176] }    // фиолетовый (#9C27B0)
+    ];
+
+    let i = 1;
+    while (i < gradient.length - 1 && p > gradient[i].pct) i++;
+    const lower = gradient[i - 1], upper = gradient[i];
+    const rangePct = (p - lower.pct) / (upper.pct - lower.pct);
+    const r = Math.round(lower.color[0] + (upper.color[0] - lower.color[0]) * rangePct);
+    const g = Math.round(lower.color[1] + (upper.color[1] - lower.color[1]) * rangePct);
+    const b = Math.round(lower.color[2] + (upper.color[2] - lower.color[2]) * rangePct);
+    return `rgb(${r},${g},${b})`;
+}
+  
+  
+  
+    const maxScores = {
+    dep: 36,
+    sui: 12,
+    anx: 20,
+    anger: 20,
+    happy: 40,
+    phys: 32,
+    rel: 36,
+    sui: 16 // 👈 если, например, 4 вопроса по 0–4 балла
+};
 
   
   
@@ -739,25 +799,40 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         resultContentDiv.innerHTML='';
 
-        const scores = {
-            dep: calculateScore(depQuestions),
-            anx: calculateScore(anxQuestions),
-            anger: calculateScore(angerQuestions),
-            happy: calculateScore(happyQuestions),
-            phys: calculateScore(physQuestions),
-            rel: calculateScore(relQuestions)
-        };
+      const scores = {
+    dep: calculateScore(depQuestions),
+    sui: calculateScore(suiQuestions), // 👈 добавили сюда
+    anx: calculateScore(anxQuestions),
+    anger: calculateScore(angerQuestions),
+    happy: calculateScore(happyQuestions),
+    phys: calculateScore(physQuestions),
+    rel: calculateScore(relQuestions)
+};
 
         for(let scale in scores){
             const score = scores[scale];
             const percentage = Math.min(100, score/maxScores[scale]*100);
+const circleLeft = Math.max(0, Math.min(100, percentage));
+
             const color = getSmoothColor(score, maxScores[scale], scale==='happy'||scale==='rel');
             const text = getDescription(scale, score);
 
             const block=document.createElement('div');
             block.style.marginBottom='25px';
             block.innerHTML=`
-                <div style="font-weight:bold; margin-bottom:5px;">${scale.toUpperCase()}</div>
+               <div style="font-weight:bold; margin-bottom:5px;">
+    ${{
+              
+        dep: 'ДЕПРЕССИЯ',
+        sui: 'Мысли о смерти',
+        anx: 'Тревожность',
+        anger: 'Раздражение / злость',
+        happy: 'Счастье и удовлетворённость',
+        phys: 'Физическое состояние',
+        rel: 'Отношения с людьми'
+    }
+            [scale] || scale.toUpperCase()}
+</div>
                 <div style="position:relative; height:20px; border-radius:12px; background:#ddd; overflow:hidden; margin-bottom:5px;">
                     <div style="height:100%; width:${percentage}%; background-color:${color}; border-radius:12px;"></div>
                     <div style="
@@ -790,6 +865,10 @@ document.addEventListener('DOMContentLoaded', function() {
         resultContainer.scrollIntoView({behavior:'smooth'});
     });
 
+  
+  
+  
+  
     // Кнопка автозаполнения
     const submitBtn = document.querySelector('button[type="submit"]');
     const autoBtn = document.createElement('button');
@@ -815,9 +894,22 @@ document.addEventListener('DOMContentLoaded', function() {
   
     // Кнопка копирования результата
     document.getElementById("copyResultBtn").addEventListener("click",function(){
-        let text = '🧭 ТЕСТ НАСТРОЕНИЯ — по вопросам\n\n';
-        const groups = {Депрессия: depQuestions, Тревога: anxQuestions, Злость: angerQuestions, Счастье: happyQuestions, 'Физические симптомы': physQuestions, Отношения: relQuestions};
-        const labels = Object.assign({}, ...[depQuestions, anxQuestions, angerQuestions, happyQuestions, physQuestions, relQuestions].map(arr => Object.fromEntries(arr.map(k=>[k,k]))));
+        let text = 'Тест настроения — по вопросам\n\n';
+       
+const groups = {
+    Депрессия: depQuestions,
+    'Мысли о смертибезысходности': suiQuestions,
+    Тревога: anxQuestions,
+    Злость: angerQuestions,
+    Счастье: happyQuestions,
+    'Физические симптомы': physQuestions,
+    Отношения: relQuestions
+};
+
+
+        const labels = Object.assign({}, ...[depQuestions, suiQuestions, anxQuestions, angerQuestions, happyQuestions, physQuestions, relQuestions]
+    .map(arr => Object.fromEntries(arr.map(k => [k, k]))));
+
 
         for(const [groupName, questions] of Object.entries(groups)){
             let sum=0;
