@@ -71,13 +71,22 @@
         h2 {
             font-size: 1.5rem;
             margin-top: 0;
-            margin-bottom: 40px;
+            margin-bottom: 38px;
+             text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.3), /* лёгкая тень для объёма */
+        0 0 5px rgba(255, 255, 255, 0.05);
+             line-height: 1.4;  
+           margin-top: 10px;
+          
+          
         }
         .instructions {
-            text-align: center;
-            font-style: ;
-            margin-bottom: 9px;
-            opacity: 0.8;
+            text-align: left;           /* выравниваем текст по левому краю */
+            max-width: 600px;           /* ограничиваем ширину для удобочитаемости */
+            margin: 0 auto 15px auto;   /* центрируем блок по горизонтали, отступ снизу */
+            line-height: 1.5;           /* делаем текст «воздушным» */
+            font-size: 1rem;            /* нормальный размер */
+            opacity: 0.85;   
         }
         .question-section {
             background-color: var(--section-bg-color);
@@ -133,6 +142,7 @@
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid #4a5a6e;
+          
         }
         .question-item:last-child {
             border-bottom: none;
@@ -149,6 +159,7 @@
     text-shadow: 
         0 1px 2px rgba(0,0,0,0.7),    /* мягкая тень для глубины */
         0 0 4px rgba(0,0,0,0.3);      /* лёгкий ореол для читаемости */
+         
 }
       
         .radio-options {
@@ -356,10 +367,10 @@
 <div class="container">
     <h1>Тест настроения</h1>
     <p class="instructions">
-      Инструкция по краткому опросу настроения.<br><br>
+      Инструкция.<br><br>
        Этот короткий тест — способ быстро понять, как ты чувствуешь себя сейчас: спокойно ли внутри, хватает ли энергии, не давит ли тревога, депрессия и как ты себя чувствуешь в отношениях.
 
- 
+ <br><br>
         Прохождение теста займёт примерно 3 минуты.  
         <br><br>
         Оцени, как чувтсвуешь себя по шкале,  
