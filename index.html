@@ -73,8 +73,8 @@
         }
         .instructions {
             text-align: center;
-            font-style: italic;
-            margin-bottom: 20px;
+            font-style: ;
+            margin-bottom: 2px;
             opacity: 0.8;
         }
         .question-section {
@@ -135,7 +135,7 @@
             font-weight: bold;
             margin-bottom: 12px;
             display: block;
-            color: var(--title-color);
+            color: #e8e8e8;
             font-size: 1.1rem;
         }
         .radio-options {
@@ -336,11 +336,16 @@
 </head>
 <body>
 
+  
+  
+  
 <div class="container">
     <h1>Тест настроения</h1>
     <p class="instructions">
       Инструкция по краткому опросу настроения.<br><br>
-        Этот короткий тест, позволит понять, как у тебя обстоят дела с настроением, тревожностью, энергией и отношениями.  
+       Этот короткий тест — способ быстро понять, как ты чувствуешь себя сейчас: спокойно ли внутри, хватает ли энергии, не давит ли тревога, депрессия и как ты себя чувствуешь в отношениях.
+
+ 
         Прохождение теста займёт примерно 3 минуты.  
         <br><br>
         Оцени, как чувтсвуешь себя по шкале,  
@@ -350,6 +355,9 @@
 
     <form id="mood-survey">
     
+      
+      
+      
         <!-- Группа 1: Депрессия (9 вопросов) -->
         <div class="question-section" data-category="depression">
             <h2>Насколько подавленным (депрессивным) ты себя чувствуете прямо сейчас?</h2>
@@ -423,6 +431,8 @@
             </ul>
         </div>
 
+      
+      
         <!-- Группа 4: Злость (5 вопросов) -->
         <div class="question-section" data-category="anger">
             <h2>Насколько ты сейчас злишься?</h2>
@@ -435,6 +445,9 @@
             </ul>
         </div>
 
+      
+      
+      
         <!-- Группа 5: Счастье (10 вопросов) -->
         <div class="question-section" data-category="happiness">
             <h2>Насколько ты сейчас счастлив?</h2>
@@ -452,6 +465,9 @@
             </ul>
         </div>
 
+      
+      
+      
         <!-- Группа 6: Физические симптомы (5 вопросов) -->
         <div class="question-section" data-category="physical">
             <h2>Есть ли у тебя сейчас физические симптомы?</h2>
@@ -497,6 +513,8 @@
             </ul>
         </div>
 
+      
+      
       
         <!-- Группа 7: Отношения (5 вопросов) -->
         <div class="question-section" data-category="relationships">
@@ -557,25 +575,9 @@
   </ul>
 </div>
         
-      
-      
-      
-      
-     
-      
-      
-      
-      
+            
       <div id="results" style="margin-top:20px;"></div>
 
-      
-      
-      
-      
-      
-      
-      
-      
       
     </form>
     <button type="submit" form="mood-survey">Подсчитать результаты</button>
@@ -599,6 +601,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultContentDiv = document.getElementById('result-content');
     const copyHint = document.getElementById('copyHint');
 
+  
+  
+  
     // Вопросы по шкалам
     const depQuestions = ['q_dep_1','q_dep_2','q_dep_3','q_dep_4','q_dep_5','q_dep_6','q_dep_7','q_dep_8','q_dep_9'];
     const suiQuestions = ['q_sui_1','q_sui_2','q_sui_3'];
